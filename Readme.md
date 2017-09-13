@@ -1,8 +1,6 @@
 
-# 没什么可读的
-
-
-
+## intro
+### a plugin for webpack aim to Compress dependency pictures
 ## Example
 
 ```js

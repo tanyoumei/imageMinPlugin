@@ -1,5 +1,87 @@
 {
+  "_args": [
+    [
+      {
+        "raw": "image-min-plugin",
+        "scope": null,
+        "escapedName": "image-min-plugin",
+        "name": "image-min-plugin",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/jiuyan/Documents/promo"
+    ]
+  ],
+  "_from": "image-min-plugin@latest",
+  "_id": "image-min-plugin@1.0.2",
+  "_inCache": true,
+  "_location": "/image-min-plugin",
+  "_nodeVersion": "7.7.4",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/image-min-plugin-1.0.2.tgz_1505100859660_0.36743322876282036"
+  },
+  "_npmUser": {
+    "name": "xiangxiang",
+    "email": "1053589702@qq.com"
+  },
+  "_npmVersion": "4.1.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "image-min-plugin",
+    "scope": null,
+    "escapedName": "image-min-plugin",
+    "name": "image-min-plugin",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/image-min-plugin/-/image-min-plugin-1.0.2.tgz",
+  "_shasum": "f112404755bef9f886964d820e7e709f676e2a07",
+  "_shrinkwrap": null,
+  "_spec": "image-min-plugin",
+  "_where": "/Users/jiuyan/Documents/promo",
   "dependencies": {
-    "chalk": "^2.1.0"
-  }
+    "chalk": "^2.1.0",
+    "babel-runtime": "^6.18.0"
+  },
+  "description": "a plugin for webpack",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "gulp": "^3.9.1",
+    "gulp-run-command": "^0.0.7",
+    "rimraf": "^2.6.1"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "f112404755bef9f886964d820e7e709f676e2a07",
+    "tarball": "https://registry.npmjs.org/image-min-plugin/-/image-min-plugin-1.0.2.tgz"
+  },
+  "gitHead": "975a359f956f86d58a180e0436232c88018bbe68",
+  "maintainers": [
+    {
+      "name": "xiangxiang",
+      "email": "1053589702@qq.com"
+    }
+  ],
+  "main": "index.es5.js",
+  "name": "image-min-plugin",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "build": "gulp build",
+    "clean": "gulp clean"
+  },
+  "version": "1.1.2"
 }

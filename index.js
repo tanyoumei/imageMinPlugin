@@ -1,17 +1,22 @@
-var request = require('https').request
-var get = require('https').get
-var red = require('chalk').red
-var blue = require('chalk').blue
-var dirname = require('path').dirname
-var basename = require('path').basename
-var parse = require('path').parse
-var createReadStream = require('fs').createReadStream
-var createWriteStream = require('fs').createWriteStream
-var appendFileSync = require('fs').appendFileSync
-var writeFileSync = require('fs').writeFileSync
+import {
+  request,
+  get
+} from 'https'
+import {
+  red,
+  blue
+} from 'chalk'
+import {
+  parse
+} from 'path'
+import {
+  createReadStream,
+  createWriteStream,
+  appendFileSync,
+  writeFileSync
+} from 'fs'
 
-
-const option = {
+const options = {
   hostname: 'tinypng.com',
   port: 443,
   path: '/web/shrink',
@@ -24,17 +29,16 @@ const option = {
 
 var imageMinPlugin = function () {}
 imageMinPlugin.prototype.apply = (compiler) => {
-  compiler.plugin('after-compile', function (compilation, callback) {
+  compiler.plugin('after-compile', (compilation, callback) => {
     var imgList = []
     var proList = []
     compilation.modules.forEach((module) => {
       if (/(.+\.png|\.jpg)$/.test(module.resource) && !imgList[module.resource]) {
-
         for (var k in module.assets) {
           imgList[module.resource] = k
           proList.push(compress({
-            originPath: module.resource,
-            fileName: k
+            path: module.resource,
+            name: k
           }, compilation))
         }
       }
@@ -46,38 +50,29 @@ imageMinPlugin.prototype.apply = (compiler) => {
   })
 }
 
-const options = {
-  hostname: 'https://tinypng.com',
-  port: 443,
-  path: '/web/shrink',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'image/jpeg',
-    'Content-Length': ''
-  }
-};
 //  操作当前的tiny文件
 var operateTinyFile = (dir, relativePath) => {
+  var _relativePath = relativePath.replace(/^\//, '')
   var path = `${dir}/tiny.json`
   try {
     var json = require(path)
-    if (json[relativePath]) {
-      return json[relativePath]
+    if (json[_relativePath]) {
+      return json[_relativePath]
     } else {
-      json[relativePath] = '1'
-      writeFileSync(path, JSON.stringify(json))
+      json[_relativePath] = '1'
+      writeFileSync(path, JSON.stringify(json, null, '\t'))
     }
   } catch (e) {
     appendFileSync(path, '{}')
     return false
   }
 }
-var PROMO_PATH = process.cwd()
+const PROMO_PATH = process.cwd()
 // 压缩一张图
 var compress = (val, compilation) => {
   return new Promise((resolve, reject) => {
-    var path = val.originPath
-    var file = val.fileName
+    var path = val.path
+    var file = val.name
     var {
       dir,
       base
