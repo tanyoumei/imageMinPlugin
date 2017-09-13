@@ -16,7 +16,7 @@ import {
   writeFileSync
 } from 'fs'
 
-const options = {
+const OPTIONS = {
   hostname: 'tinypng.com',
   port: 443,
   path: '/web/shrink',
@@ -25,30 +25,32 @@ const options = {
     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
   }
 }
+const PROMO_PATH = process.cwd()
 
-
-var imageMinPlugin = function () {}
-imageMinPlugin.prototype.apply = (compiler) => {
-  compiler.plugin('after-compile', (compilation, callback) => {
-    var imgList = []
-    var proList = []
-    compilation.modules.forEach((module) => {
-      if (/(.+\.png|\.jpg)$/.test(module.resource) && !imgList[module.resource]) {
-        for (var k in module.assets) {
-          imgList[module.resource] = k
-          proList.push(compress({
-            path: module.resource,
-            name: k
-          }, compilation))
+export default class imageMinPlugin {
+  apply(compiler) {
+    compiler.plugin('after-compile', (compilation, callback) => {
+      var imgList = []
+      var proList = []
+      compilation.modules.forEach((module) => {
+        if (/(.+\.png|\.jpg)$/.test(module.resource) && !imgList[module.resource]) {
+          for (var k in module.assets) {
+            imgList[module.resource] = k
+            proList.push(compress({
+              path: module.resource,
+              name: k
+            }, compilation))
+          }
         }
-      }
-    })
-    Promise.all(proList)
-      .then(() => {
-        callback();
       })
-  })
+      Promise.all(proList)
+        .then(() => {
+          callback();
+        })
+    })
+  }
 }
+
 
 //  操作当前的tiny文件
 var operateTinyFile = (dir, relativePath) => {
@@ -59,7 +61,7 @@ var operateTinyFile = (dir, relativePath) => {
     if (json[_relativePath]) {
       return json[_relativePath]
     } else {
-      json[_relativePath] = '1'
+      json[_relativePath] = 'true'
       writeFileSync(path, JSON.stringify(json, null, '\t'))
     }
   } catch (e) {
@@ -67,7 +69,7 @@ var operateTinyFile = (dir, relativePath) => {
     return false
   }
 }
-const PROMO_PATH = process.cwd()
+
 // 压缩一张图
 var compress = (val, compilation) => {
   return new Promise((resolve, reject) => {
@@ -84,7 +86,7 @@ var compress = (val, compilation) => {
       return false
     }
 
-    createReadStream(`${path}`).pipe(request(option, (res) => {
+    createReadStream(`${path}`).pipe(request(OPTIONS, (res) => {
       res.on('data', resInfo => {
         try {
           resInfo = JSON.parse(resInfo.toString())
@@ -126,4 +128,3 @@ var compress = (val, compilation) => {
     }))
   })
 }
-module.exports = imageMinPlugin

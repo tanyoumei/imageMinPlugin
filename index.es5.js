@@ -1,5 +1,11 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _https = require('https');
 
 var _chalk = require('chalk');
@@ -8,7 +14,9 @@ var _path = require('path');
 
 var _fs = require('fs');
 
-var options = {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var OPTIONS = {
   hostname: 'tinypng.com',
   port: 443,
   path: '/web/shrink',
@@ -17,30 +25,44 @@ var options = {
     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
   }
 };
+var PROMO_PATH = process.cwd();
 
-var imageMinPlugin = function imageMinPlugin() {};
-imageMinPlugin.prototype.apply = function (compiler) {
-  compiler.plugin('after-compile', function (compilation, callback) {
-    var imgList = [];
-    var proList = [];
-    compilation.modules.forEach(function (module) {
-      if (/(.+\.png|\.jpg)$/.test(module.resource) && !imgList[module.resource]) {
-        for (var k in module.assets) {
-          imgList[module.resource] = k;
-          proList.push(compress({
-            path: module.resource,
-            name: k
-          }, compilation));
-        }
-      }
-    });
-    Promise.all(proList).then(function () {
-      callback();
-    });
-  });
-};
+var imageMinPlugin = function () {
+  function imageMinPlugin() {
+    _classCallCheck(this, imageMinPlugin);
+  }
+
+  _createClass(imageMinPlugin, [{
+    key: 'apply',
+    value: function apply(compiler) {
+      compiler.plugin('after-compile', function (compilation, callback) {
+        var imgList = [];
+        var proList = [];
+        compilation.modules.forEach(function (module) {
+          if (/(.+\.png|\.jpg)$/.test(module.resource) && !imgList[module.resource]) {
+            for (var k in module.assets) {
+              imgList[module.resource] = k;
+              proList.push(compress({
+                path: module.resource,
+                name: k
+              }, compilation));
+            }
+          }
+        });
+        Promise.all(proList).then(function () {
+          callback();
+        });
+      });
+    }
+  }]);
+
+  return imageMinPlugin;
+}();
 
 //  操作当前的tiny文件
+
+
+exports.default = imageMinPlugin;
 var operateTinyFile = function operateTinyFile(dir, relativePath) {
   var _relativePath = relativePath.replace(/^\//, '');
   var path = dir + '/tiny.json';
@@ -49,7 +71,7 @@ var operateTinyFile = function operateTinyFile(dir, relativePath) {
     if (json[_relativePath]) {
       return json[_relativePath];
     } else {
-      json[_relativePath] = '1';
+      json[_relativePath] = 'true';
       (0, _fs.writeFileSync)(path, JSON.stringify(json, null, '\t'));
     }
   } catch (e) {
@@ -57,7 +79,7 @@ var operateTinyFile = function operateTinyFile(dir, relativePath) {
     return false;
   }
 };
-var PROMO_PATH = process.cwd();
+
 // 压缩一张图
 var compress = function compress(val, compilation) {
   return new Promise(function (resolve, reject) {
@@ -75,7 +97,7 @@ var compress = function compress(val, compilation) {
       return false;
     }
 
-    (0, _fs.createReadStream)('' + path).pipe((0, _https.request)(option, function (res) {
+    (0, _fs.createReadStream)('' + path).pipe((0, _https.request)(OPTIONS, function (res) {
       res.on('data', function (resInfo) {
         try {
           resInfo = JSON.parse(resInfo.toString());
@@ -117,4 +139,3 @@ var compress = function compress(val, compilation) {
     }));
   });
 };
-module.exports = imageMinPlugin;
