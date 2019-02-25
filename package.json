@@ -13,7 +13,7 @@
       "/Users/jiuyan/Documents/promo"
     ]
   ],
-  "_from": "image-min-plugin@latest",
+  "_from": "image-min-plugin@1.1.3",
   "_id": "image-min-plugin@1.0.2",
   "_inCache": true,
   "_location": "/image-min-plugin",
@@ -46,6 +46,10 @@
     "#DEV:/",
     "#USER"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanyoumei/imageMinPlugin.git"
+  },
   "_resolved": "https://registry.npmjs.org/image-min-plugin/-/image-min-plugin-1.0.2.tgz",
   "_shasum": "f112404755bef9f886964d820e7e709f676e2a07",
   "_shrinkwrap": null,
@@ -58,10 +62,14 @@
   "description": "a plugin for webpack",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
     "babel-preset-es2015": "^6.24.1",
     "gulp": "^3.9.1",
     "gulp-run-command": "^0.0.7",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3",
+    "webpack-node-externals": "^1.7.2"
   },
   "directories": {},
   "dist": {
@@ -75,13 +83,13 @@
       "email": "1053589702@qq.com"
     }
   ],
-  "main": "index.es5.js",
+  "main": "dist/index.es5.js",
   "name": "image-min-plugin",
   "optionalDependencies": {},
   "readme": "ERROR: No README data found!",
   "scripts": {
-    "build": "gulp build",
-    "clean": "gulp clean"
+    "build": "webpack --config webpack.config.js"
   },
-  "version": "1.1.2"
+  "version": "1.1.3",
+  "__npminstall_done": "Fri Feb 15 2019 17:21:16 GMT+0800 (GMT+08:00)"
 }

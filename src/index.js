@@ -13,7 +13,8 @@ import {
   createReadStream,
   createWriteStream,
   appendFileSync,
-  writeFileSync
+  writeFileSync,
+  readFileSync
 } from 'fs'
 
 const OPTIONS = {
@@ -27,7 +28,12 @@ const OPTIONS = {
 }
 const PROMO_PATH = process.cwd()
 
-export default class imageMinPlugin {
+class ImageMinPlugin {
+
+  constructor(options = {}) {
+    this.options = options;
+  }
+
   apply(compiler) {
     compiler.plugin('after-compile', (compilation, callback) => {
       var imgList = []
@@ -57,7 +63,8 @@ var operateTinyFile = (dir, relativePath) => {
   var _relativePath = relativePath.replace(/^\//, '')
   var path = `${dir}/tiny.json`
   try {
-    var json = require(path)
+    var json = readFileSync(path, { encoding: 'utf8' });
+    json = JSON.parse(json)
     if (json[_relativePath]) {
       return json[_relativePath]
     } else {
@@ -104,7 +111,7 @@ var compress = (val, compilation) => {
             });
             ((relativePath) => {
               imgRes.on('end', () => {
-                console.log(`CompressDone ${blue(relativePath)} ${blue(`${oldSize}KB`)} ==> ${blue(`${newSize}KB`)} -${blue(`${Math.floor(((oldSize - newSize) / oldSize * 100))}%` )}`)
+                console.log(`CompressDone ${blue(relativePath)} ${blue(`${oldSize}KB`)} ==> ${blue(`${newSize}KB`)} -${blue(`${Math.floor(((oldSize - newSize) / oldSize * 100))}%`)}`)
                 operateTinyFile(dir, relativePath)
                 // 改变chunk
                 compilation.assets[file] = {
@@ -119,7 +126,7 @@ var compress = (val, compilation) => {
               })
             })(relativePath)
 
-            writeS.on('close', () => {})
+            writeS.on('close', () => { })
           })
         } catch (error) {
           return console.log(`CompressError '${base}'.....${resInfo.message}`)
@@ -128,3 +135,7 @@ var compress = (val, compilation) => {
     }))
   })
 }
+
+
+
+module.exports = ImageMinPlugin
