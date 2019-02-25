@@ -1,6 +1,7 @@
 
 #### 🍂如果你觉得好的话 帮我点一个star 可以吗
-#### 🍂 [https://github.com/tanyoumei/imageMinPlugin]: https://github.com/tanyoumei/imageMinPlugin  "https://github.com/tanyoumei/imageMinPlugin"
+#### 🍂 [https://github.com/tanyoumei/imageMinPlugin](https://github.com/tanyoumei/imageMinPlugin)
+
 
 ### intro
 ###### webpack插件，通过tinypng的网站来压缩图片 会生成tiny.json压缩文件列表
