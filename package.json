@@ -1,7 +1,6 @@
 {
   "_args": [
-    [
-      {
+    [{
         "raw": "image-min-plugin",
         "scope": null,
         "escapedName": "image-min-plugin",
@@ -77,12 +76,10 @@
     "tarball": "https://registry.npmjs.org/image-min-plugin/-/image-min-plugin-1.0.2.tgz"
   },
   "gitHead": "975a359f956f86d58a180e0436232c88018bbe68",
-  "maintainers": [
-    {
-      "name": "xiangxiang",
-      "email": "1053589702@qq.com"
-    }
-  ],
+  "maintainers": [{
+    "name": "xiangxiang",
+    "email": "1053589702@qq.com"
+  }],
   "main": "dist/index.es5.js",
   "name": "image-min-plugin",
   "optionalDependencies": {},
@@ -90,6 +87,6 @@
   "scripts": {
     "build": "webpack --config webpack.config.js"
   },
-  "version": "1.1.3",
+  "version": "1.1.4",
   "__npminstall_done": "Fri Feb 15 2019 17:21:16 GMT+0800 (GMT+08:00)"
 }
