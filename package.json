@@ -87,6 +87,6 @@
   "scripts": {
     "build": "webpack --config webpack.config.js"
   },
-  "version": "1.1.5",
+  "version": "1.1.6",
   "__npminstall_done": "Fri Feb 15 2019 17:21:16 GMT+0800 (GMT+08:00)"
 }
